@@ -10,10 +10,6 @@ class HackerAPI
     @apiServer = "https://hackerapi.com/v1"
 
 
-  setToken: (token) ->
-    @token = token
-
-
   getToken: (username, password, callback) ->
     req = {}
     req.method = 'POST'
@@ -23,6 +19,14 @@ class HackerAPI
                     username: username,
                     password: password
                   }
+
+    return @makeRequest req
+
+
+  getUserInfo: (id, callback) ->
+    req = {}
+    req.endpoint ="/users/#{id}"
+    req.callback = callback
 
     return @makeRequest req
 
@@ -43,6 +47,9 @@ class HackerAPI
       if method is 'POST'
         options.body = payload
 
+      if @token
+        options.qs.token = @token
+
       request options, (error, response, body) ->
         if error
           reject(error)
@@ -50,6 +57,7 @@ class HackerAPI
         else
           resolve(body)
           callback(null, body) if callback
+
 
 
 login = ->
@@ -62,4 +70,12 @@ login = ->
   api = new HackerAPI
   api.getToken "kartik@hackthenorth.com", "", onLogin
 
+
+
+token = ''
+
+api = new HackerAPI token
+api.getUserInfo(2).then((x) ->
+  console.log x
+)
 
