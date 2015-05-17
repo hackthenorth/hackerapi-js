@@ -4,7 +4,7 @@ request = require("request")
 
 class HackerAPI
 
-  constructor: ({token} = {})->
+  constructor: (token) ->
     @token = token
     @userId = null
     @apiServer = "https://hackerapi.com/v1"
