@@ -52,13 +52,14 @@ class HackerAPI
           callback(null, body) if callback
 
 
-onLogin = (err, data) ->
-  if 'token' of data
-    console.log "Hello, #{data.name}, your token is #{data.token}"
-  else
-    throw new Error "Invalid login details"
+login = ->
+  onLogin = (err, data) ->
+    if 'token' of data
+      console.log "Hello, #{data.name}, your token is #{data.token}"
+    else
+      throw new Error "Invalid login details"
 
-api = new HackerAPI
-api.getToken "kartik@hackthenorth.com", "", onLogin
+  api = new HackerAPI
+  api.getToken "kartik@hackthenorth.com", "", onLogin
 
 
