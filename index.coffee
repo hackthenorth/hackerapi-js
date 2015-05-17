@@ -4,9 +4,8 @@ request = require("request")
 
 class HackerAPI
 
-  constructor: ->
-    @token = null
-    @data = null
+  constructor: ({token} = {})->
+    @token = token
     @userId = null
     @apiServer = "https://hackerapi.com/v1"
 
@@ -15,10 +14,11 @@ class HackerAPI
     @token = token
 
 
-  getToken: (username, password) ->
+  getToken: (username, password, callback) ->
     req = {}
     req.method = 'POST'
     req.endpoint ='/auth/user'
+    req.callback = callback
     req.payload = {
                     username: username,
                     password: password
@@ -52,9 +52,12 @@ class HackerAPI
           callback(null, body) if callback
 
 
+onLogin = (err, data) ->
+  if data.success
+    console.log "Hello, #{data.name}, your token is #{data.token}"
+  throw new Error "Invalid login details"
 
 api = new HackerAPI
-api.getToken("kartik@hackthenorth.com", "test").then((body) ->
-  if 'success' not in body
-    console.log "Hello, #{body.name}, your token is #{body.token}"
-)
+api.getToken "kartik@hackthenorth.com", "", onLogin
+
+
