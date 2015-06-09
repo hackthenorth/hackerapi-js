@@ -133,36 +133,7 @@ class HackerAPI
     return @makeRequest req
 
 
-  ########## Events Endpoint ##########
-  getEventInfo: (slug, callback) ->
-    req = {}
-    req.endpoint = "/events/#{slug}"
-    req.callback = callback
-
-    return @makeRequest req
-
-
-  getEventSignups: (slug, callback) ->
-    req = {}
-    req.endpoint = "/events/#{slug}/signups"
-    req.callback = callback
-
-    return @makeRequest req
-
-
-  ########## Search Endpoint ##########
-  searchInstitutions: (query, callback) ->
-    req = {}
-    req.params   = {
-                     q: query
-                   }
-    req.callback = callback
-    req.endpoint = "/search/institutions"
-
-    return @makeRequest req
-
-
-  createInsitution: (payload, callback) ->
+  createInstitution: (payload, callback) ->
     if not payload.name?
       throw "Institution name missing"
 
@@ -192,10 +163,57 @@ class HackerAPI
     return @makeRequest req
 
 
-  getInsitutionInfo: (id, callback) ->
+  ########## Events Endpoint ##########
+  getEventInfo: (slug, callback) ->
     req = {}
-    req.endpoint = "/institutions/#{id}"
+    req.endpoint = "/events/#{slug}"
     req.callback = callback
+
+    return @makeRequest req
+
+
+  getEventSignups: (slug, callback) ->
+    req = {}
+    req.endpoint = "/events/#{slug}/signups"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  uploadFile: (slug, payload, callback) ->
+    if not event_slug?
+      throw "Event slug missing"
+
+    if not payload.file?
+      throw "File missing"
+
+    if not payload.type?
+      throw "File type missing."
+
+    types = ['resume', "receipt", "form", "other"]
+    if payload.type not in types
+      throw "Invalid file type"
+
+    req = {}
+    req.method  = 'POST'
+    req.payload = {
+                    file : payload.file,
+                    type : payload.type
+                  }
+    req.endpoint = "/events/#{slug}/upload"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  ########## Search Endpoint ##########
+  searchInstitutions: (query, callback) ->
+    req = {}
+    req.params   = {
+                     q: query
+                   }
+    req.callback = callback
+    req.endpoint = "/search/institutions"
 
     return @makeRequest req
 
@@ -256,8 +274,8 @@ callback = console.log
 # api.searchInstitutions("water", console.log)
 # api.getCurrentUserInfo(callback)
 # api.getUserInfo(1, callback)
-# api.createInsitution({name:"Emery Collegiate Institute", institution_type:"high_school", country_code:"CA"}, callback)
-# api.getInsitutionInfo(22593, callback)
+# api.createInstitution({name:"Emery Collegiate Institute", institution_type:"high_school", country_code:"CA"}, callback)
+# api.getInstitutionInfo(22593, callback)
 
 
 
