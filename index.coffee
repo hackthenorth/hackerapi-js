@@ -23,6 +23,10 @@ class HackerAPI
     return @makeRequest req
 
 
+  setToken: (token) ->
+    @token = token
+
+
   ########## Users Endpoint ##########
   getCurrentUserInfo: (callback) ->
     req = {}
