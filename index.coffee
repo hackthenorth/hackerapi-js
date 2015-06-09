@@ -1,5 +1,4 @@
-Promise = require("bluebird")
-request = require("request")
+XMLHttpRequest = require('xhr2')
 
 
 class HackerAPI
@@ -25,38 +24,53 @@ class HackerAPI
 
   getUserInfo: (id, callback) ->
     req = {}
-    req.endpoint ="/users/#{id}"
+    req.endpoint = "/users/#{id}"
     req.callback = callback
+
+    return @makeRequest req
+
+  searchInstitutions: (query, callback) ->
+    req = {}
+    req.params   = {"q": query}
+    req.callback = callback
+    req.endpoint = "/search/institutions"
 
     return @makeRequest req
 
 
   makeRequest: ({endpoint, method, params, payload, callback} = {}) ->
-    return new Promise (resolve, reject) =>
-      method ?= 'GET'
-      params ?= {}
-      url = "#{@apiServer}#{endpoint}"
+    method ?= 'GET'
+    params ?= {}
 
-      options = {
-                  url : url,
-                  qs : params
-                  method : method,
-                  json : true,
-                }
+    if @token
+      params.token = @token
 
-      if method is 'POST'
-        options.body = payload
+    params = @serialize(params)
+    url = "#{@apiServer}#{endpoint}?#{params}"
 
-      if @token
-        options.qs.token = @token
+    xhr = new XMLHttpRequest
+    xhr.open(method, url);
+    xhr.send();
 
-      request options, (error, response, body) ->
-        if error
-          reject(error)
-          callback(error) if callback
-        else
-          resolve(body)
-          callback(null, body) if callback
+    xhr.onreadystatechange = () ->
+      if xhr.readyState == 4 and xhr.status == 200
+        data = xhr.responseText
+        try
+          json = JSON.parse(data)
+        catch
+          json = {"success" : false, "message" : "Could not parse JSON"}
+
+        callback(json)
+
+
+  serialize: (obj) ->
+    str = []
+
+    for p of obj
+      param = encodeURIComponent(p) + "=" + encodeURIComponent(obj[p])
+      str.push param
+
+    return str.join("&")
 
 
 
@@ -71,11 +85,6 @@ login = ->
   api.getToken "kartik@hackthenorth.com", "", onLogin
 
 
-
-token = ''
-
-api = new HackerAPI token
-api.getUserInfo(2).then((x) ->
-  console.log x
-)
+api = new HackerAPI
+api.searchInstitutions("water", console.log)
 
