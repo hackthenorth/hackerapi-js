@@ -272,15 +272,6 @@ class HackerAPI
 
 
 
-login = ->
-  onLogin = (err, data) ->
-    if 'token' of data
-      console.log "Hello, #{data.name}, your token is #{data.token}"
-    else
-      throw new Error "Invalid login details"
-
-  api = new HackerAPI
-  api.getToken "kartik@hackthenorth.com", "", onLogin
 
 token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzM5MTUyOTgsImlkIjoyLCJldnQiOlsxXSwidHlwIjoidXNyIn0.USfHFAJ_AYw4hP-wAjiVSWiXbwxPwWLjzzC5oXhVCws"
 api = new HackerAPI token
