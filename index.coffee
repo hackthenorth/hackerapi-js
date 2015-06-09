@@ -288,7 +288,7 @@ class HackerAPI
       return @parseReponse(xhr.responseText)
 
     xhr.onreadystatechange = () ->
-      if xhr.readyState == 4 and xhr.status == 200
+      if xhr.readyState == 4
         json = self.parseReponse(xhr.responseText)
         callback(json)
 
@@ -323,7 +323,8 @@ callback = console.log
 # user_payload = {"address": {}}
 # api.updateUser(2, user_payload, callback)
 # api.createTeam('hackthenorth', callback)
-# api.getTeamInfo('8ed19e0022', callback)
+# api.getTeamInfo('3468f7cba4', callback)
+# api.joinTeam('3468f7cba4', callback)
 # console.log api.leaveTeam('8ed19e0022', callback)
 
 
