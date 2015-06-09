@@ -40,9 +40,49 @@ class HackerAPI
 
   searchInstitutions: (query, callback) ->
     req = {}
-    req.params   = {"q": query}
+    req.params   = {
+                     q: query
+                   }
     req.callback = callback
     req.endpoint = "/search/institutions"
+
+    return @makeRequest req
+
+
+  createInsitution: (payload, callback) ->
+    if not payload.name?
+      throw "Institution name missing"
+
+    if not payload.institution_type?
+      throw "Institution type missing"
+
+    if not payload.country_code?
+      throw "Missing country code"
+
+    types = ['post-secondary', "high_school", "middle_school", "other"]
+    if payload.institution_type not in types
+      throw "Invalid institution type"
+
+    if payload.country_code.length != 2
+      throw "Invalid country code"
+
+    req = {}
+    req.method  = 'POST'
+    req.payload = {
+                    name : payload.name,
+                    institution_type : payload.institution_type,
+                    country_code : payload.country_code
+                  }
+    req.endpoint = "/institutions"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getInsitutionInfo: (id, callback) ->
+    req = {}
+    req.endpoint = "/institutions/#{id}"
+    req.callback = callback
 
     return @makeRequest req
 
@@ -58,8 +98,7 @@ class HackerAPI
     url = "#{@apiServer}#{endpoint}?#{params}"
 
     xhr = new XMLHttpRequest
-    xhr.open(method, url);
-    xhr.send();
+    xhr.open(method, url, true)
 
     xhr.onreadystatechange = () ->
       if xhr.readyState == 4 and xhr.status == 200
@@ -68,8 +107,13 @@ class HackerAPI
           json = JSON.parse(data)
         catch
           json = {"success" : false, "message" : "Could not parse JSON"}
-
         callback(json)
+
+    if method == 'POST'
+      xhr.setRequestHeader("Content-type", "application/json")
+      xhr.send(JSON.stringify(payload))
+    else
+      xhr.send()
 
 
   serialize: (obj) ->
@@ -98,9 +142,9 @@ api = new HackerAPI token
 callback = console.log
 # api.searchInstitutions("water", console.log)
 # api.getCurrentUserInfo(callback)
-api.getUserInfo(1, callback)
-
-
+# api.getUserInfo(1, callback)
+# api.createInsitution({name:"Emery Collegiate Institute", institution_type:"high_school", country_code:"CA"}, callback)
+# api.getInsitutionInfo(22593, callback)
 
 
 
