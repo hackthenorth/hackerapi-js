@@ -7,6 +7,7 @@ class HackerAPI
     @token = token
     @userId = null
     @apiServer = "https://hackerapi.com/v1"
+    @sync = false
 
 
   ########## Auth Endpoint ##########
@@ -254,6 +255,7 @@ class HackerAPI
     method ?= 'GET'
     params ?= {}
     payload ?= null
+    self = @
 
     if @token
       params.token = @token
@@ -262,16 +264,7 @@ class HackerAPI
     url = "#{@apiServer}#{endpoint}?#{params}"
 
     xhr = new XMLHttpRequest
-    xhr.open(method, url, true)
-
-    xhr.onreadystatechange = () ->
-      if xhr.readyState == 4 and xhr.status == 200
-        data = xhr.responseText
-        try
-          json = JSON.parse(data)
-        catch
-          json = {"success" : false, "message" : "Could not parse JSON"}
-        callback(json)
+    xhr.open(method, url, !@sync)
 
     if method == 'POST' or method == 'PUT'
       if payload
@@ -281,6 +274,22 @@ class HackerAPI
         xhr.send()
     else
       xhr.send()
+
+    if @sync
+      return @parseReponse(xhr.responseText)
+
+    xhr.onreadystatechange = () ->
+      if xhr.readyState == 4 and xhr.status == 200
+        json = self.parseReponse(xhr.responseText)
+        callback(json)
+
+
+  parseReponse: (data) ->
+    try
+      json = JSON.parse(data)
+    catch
+      json = {"success" : false, "message" : "Could not parse response JSON"}
+    return json
 
 
   serialize: (obj) ->
@@ -301,7 +310,7 @@ callback = console.log
 # api.getCurrentUserInfo(callback)
 # api.getUserInfo(1, callback)
 # api.createInsitution({name:"Emery Collegiate Institute", institution_type:"high_school", country_code:"CA"}, callback)
-# api.getInsitutionInfo(22593, callback)
+# api.getInstitutionInfo(22593, callback)
 # user_payload = {"address": {}}
 # api.updateUser(2, user_payload, callback)
 # api.createTeam('hackthenorth', callback)
