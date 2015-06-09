@@ -9,6 +9,7 @@ class HackerAPI
     @apiServer = "https://hackerapi.com/v1"
 
 
+  ########## Auth Endpoint ##########
   getToken: (username, password, callback) ->
     req = {}
     req.method = 'POST'
@@ -21,7 +22,7 @@ class HackerAPI
 
     return @makeRequest req
 
-
+  ########## Users Endpoint ##########
   getCurrentUserInfo: (callback) ->
     req = {}
     req.endpoint = "/users/me"
@@ -54,6 +55,7 @@ class HackerAPI
     return @makeRequest req
 
 
+  ########## Teams Endpoint ##########
   getTeamInfo: (id, callback) ->
     req = {}
     req.endpoint = "/teams/#{id}"
@@ -62,6 +64,7 @@ class HackerAPI
     return @makeRequest req
 
 
+  ########## Pipeline Endpoint ##########
   getPipelineInfo: (id, callback) ->
     req = {}
     req.endpoint = "/pipeline/#{id}"
@@ -94,6 +97,7 @@ class HackerAPI
     return @makeRequest req
 
 
+  ########## Claims Endpoint ##########
   getClaimInfo: (id, callback) ->
     req = {}
     req.endpoint = "/claims/#{id}"
@@ -102,6 +106,7 @@ class HackerAPI
     return @makeRequest req
 
 
+  ########## Files Endpoint ##########
   getFileInfo: (id, callback) ->
     req = {}
     req.endpoint = "/files/#{id}"
@@ -118,6 +123,7 @@ class HackerAPI
     return @makeRequest req
 
 
+  ########## Institutions Endpoint ##########
   getInstitutionInfo: (id, callback) ->
     req = {}
     req.endpoint = "/institutions/#{id}"
@@ -126,6 +132,7 @@ class HackerAPI
     return @makeRequest req
 
 
+  ########## Events Endpoint ##########
   getEventInfo: (slug, callback) ->
     req = {}
     req.endpoint = "/events/#{slug}"
@@ -142,6 +149,7 @@ class HackerAPI
     return @makeRequest req
 
 
+  ########## Search Endpoint ##########
   searchInstitutions: (query, callback) ->
     req = {}
     req.params   = {"q": query}
