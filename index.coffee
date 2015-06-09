@@ -79,6 +79,15 @@ class HackerAPI
     return @makeRequest req
 
 
+  createTeam: (event_slug, callback) ->
+    req = {}
+    req.method   = "POST"
+    req.endpoint = "/events/#{event_slug}/teams"
+    req.callback = callback
+
+    return @makeRequest req
+
+
   ########## Pipeline Endpoint ##########
   getPipelineInfo: (id, callback) ->
     req = {}
@@ -235,6 +244,7 @@ class HackerAPI
   makeRequest: ({endpoint, method, params, payload, callback} = {}) ->
     method ?= 'GET'
     params ?= {}
+    payload ?= null
 
     if @token
       params.token = @token
@@ -255,8 +265,11 @@ class HackerAPI
         callback(json)
 
     if method == 'POST' or method == 'PUT'
-      xhr.setRequestHeader("Content-type", "application/json")
-      xhr.send(JSON.stringify(payload))
+      if payload
+        xhr.setRequestHeader("Content-type", "application/json")
+        xhr.send(JSON.stringify(payload))
+      else
+        xhr.send()
     else
       xhr.send()
 
@@ -272,7 +285,6 @@ class HackerAPI
 
 
 
-
 token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzM5MTUyOTgsImlkIjoyLCJldnQiOlsxXSwidHlwIjoidXNyIn0.USfHFAJ_AYw4hP-wAjiVSWiXbwxPwWLjzzC5oXhVCws"
 api = new HackerAPI token
 callback = console.log
@@ -281,9 +293,10 @@ callback = console.log
 # api.getUserInfo(1, callback)
 # api.createInsitution({name:"Emery Collegiate Institute", institution_type:"high_school", country_code:"CA"}, callback)
 # api.getInsitutionInfo(22593, callback)
-user_payload = {"address": {}}
-api.updateUser(2, user_payload, callback)
-
+# user_payload = {"address": {}}
+# api.updateUser(2, user_payload, callback)
+# api.createTeam('hackthenorth', callback)
+api.getTeamInfo('8ed19e0022', callback)
 
 
 # TODOS
