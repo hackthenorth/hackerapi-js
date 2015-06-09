@@ -212,7 +212,7 @@ class HackerAPI
     return @makeRequest req
 
 
-  uploadFile: (slug, payload, callback) ->
+  uploadFile: (evet_slug, payload, callback) ->
     if not event_slug?
       throw "Event slug missing"
 
