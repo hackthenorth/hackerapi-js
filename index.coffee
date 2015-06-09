@@ -22,12 +22,13 @@ class HackerAPI
     return @makeRequest req
 
 
-  getUserInfo: (id, callback) ->
+  getCurrentUserInfo: (callback) ->
     req = {}
-    req.endpoint = "/users/#{id}"
+    req.endpoint = "/users/me"
     req.callback = callback
 
     return @makeRequest req
+
 
   searchInstitutions: (query, callback) ->
     req = {}
@@ -84,7 +85,10 @@ login = ->
   api = new HackerAPI
   api.getToken "kartik@hackthenorth.com", "", onLogin
 
+token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzM5MTUyOTgsImlkIjoyLCJldnQiOlsxXSwidHlwIjoidXNyIn0.USfHFAJ_AYw4hP-wAjiVSWiXbwxPwWLjzzC5oXhVCws"
+api = new HackerAPI token
+callback = console.log
+# api.searchInstitutions("water", console.log)
+api.getCurrentUserInfo(callback)
 
-api = new HackerAPI
-api.searchInstitutions("water", console.log)
 
