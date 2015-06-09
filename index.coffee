@@ -22,6 +22,7 @@ class HackerAPI
 
     return @makeRequest req
 
+
   ########## Users Endpoint ##########
   getCurrentUserInfo: (callback) ->
     req = {}
@@ -208,9 +209,9 @@ login = ->
 token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzM5MTUyOTgsImlkIjoyLCJldnQiOlsxXSwidHlwIjoidXNyIn0.USfHFAJ_AYw4hP-wAjiVSWiXbwxPwWLjzzC5oXhVCws"
 api = new HackerAPI token
 callback = console.log
-api.searchInstitutions("water", console.log)
+# api.searchInstitutions("water", console.log)
 # api.getCurrentUserInfo(callback)
-api.getUserInfo(1, callback)
+# api.getUserInfo(1, callback)
 
 
 
