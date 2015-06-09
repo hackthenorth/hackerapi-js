@@ -80,6 +80,15 @@ class HackerAPI
     return @makeRequest req
 
 
+  joinTeam: (team_id, callback) ->
+    req = {}
+    req.method   = "PUT"
+    req.endpoint = "/teams/#{team_id}"
+    req.callback = callback
+
+    return @makeRequest req
+
+
   createTeam: (event_slug, callback) ->
     req = {}
     req.method   = "POST"
