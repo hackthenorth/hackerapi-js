@@ -30,6 +30,14 @@ class HackerAPI
     return @makeRequest req
 
 
+  getUserInfo: (id, callback) ->
+    req = {}
+    req.endpoint = "/users/#{id}"
+    req.callback = callback
+
+    return @makeRequest req
+
+
   searchInstitutions: (query, callback) ->
     req = {}
     req.params   = {"q": query}
@@ -89,6 +97,14 @@ token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzM5MTUyOTgsImlkIjoyLC
 api = new HackerAPI token
 callback = console.log
 # api.searchInstitutions("water", console.log)
-api.getCurrentUserInfo(callback)
+# api.getCurrentUserInfo(callback)
+api.getUserInfo(1, callback)
+
+
+
+
+
+# TODOS
+# - handle errors
 
 
