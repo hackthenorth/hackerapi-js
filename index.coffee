@@ -88,6 +88,15 @@ class HackerAPI
     return @makeRequest req
 
 
+  leaveTeam: (id, callback) ->
+    req = {}
+    req.method   = "DELETE"
+    req.endpoint = "/teams/#{id}"
+    req.callback = callback
+
+    return @makeRequest req
+
+
   ########## Pipeline Endpoint ##########
   getPipelineInfo: (id, callback) ->
     req = {}
@@ -296,7 +305,8 @@ callback = console.log
 # user_payload = {"address": {}}
 # api.updateUser(2, user_payload, callback)
 # api.createTeam('hackthenorth', callback)
-api.getTeamInfo('8ed19e0022', callback)
+# api.getTeamInfo('8ed19e0022', callback)
+# console.log api.leaveTeam('8ed19e0022', callback)
 
 
 # TODOS
