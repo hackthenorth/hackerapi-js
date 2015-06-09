@@ -56,6 +56,16 @@ class HackerAPI
     return @makeRequest req
 
 
+  updateUser: (id, payload, callback) ->
+    req = {}
+    req.method   = 'PUT'
+    req.payload  = payload
+    req.endpoint = "/users/#{id}"
+    req.callback = callback
+
+    return @makeRequest req
+
+
   ########## Teams Endpoint ##########
   getTeamInfo: (id, callback) ->
     req = {}
@@ -222,7 +232,7 @@ class HackerAPI
           json = {"success" : false, "message" : "Could not parse JSON"}
         callback(json)
 
-    if method == 'POST'
+    if method == 'POST' or method == 'PUT'
       xhr.setRequestHeader("Content-type", "application/json")
       xhr.send(JSON.stringify(payload))
     else
@@ -258,7 +268,8 @@ callback = console.log
 # api.getUserInfo(1, callback)
 # api.createInsitution({name:"Emery Collegiate Institute", institution_type:"high_school", country_code:"CA"}, callback)
 # api.getInsitutionInfo(22593, callback)
-
+user_payload = {"address": {}}
+api.updateUser(2, user_payload, callback)
 
 
 
