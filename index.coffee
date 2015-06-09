@@ -38,6 +38,110 @@ class HackerAPI
     return @makeRequest req
 
 
+  getUserFiles: (id, callback) ->
+    req = {}
+    req.endpoint = "/users/#{id}/files"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getUserResume: (id, callback) ->
+    req = {}
+    req.endpoint = "/users/#{id}/resume"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getTeamInfo: (id, callback) ->
+    req = {}
+    req.endpoint = "/teams/#{id}"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getPipelineInfo: (id, callback) ->
+    req = {}
+    req.endpoint = "/pipeline/#{id}"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getPipelineClaims: (id, callback) ->
+    req = {}
+    req.endpoint = "/pipeline/#{id}/claims"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getPipelineFields: (id, callback) ->
+    req = {}
+    req.endpoint = "/pipeline/#{id}/fields"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getPipelineFieldById: (id, field_id, callback) ->
+    req = {}
+    req.endpoint = "/pipeline/#{id}/fields/#{field_id}"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getClaimInfo: (id, callback) ->
+    req = {}
+    req.endpoint = "/claims/#{id}"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getFileInfo: (id, callback) ->
+    req = {}
+    req.endpoint = "/files/#{id}"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getFileDownload: (id, callback) ->
+    req = {}
+    req.endpoint = "/files/#{id}/download"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getInstitutionInfo: (id, callback) ->
+    req = {}
+    req.endpoint = "/institutions/#{id}"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getEventInfo: (slug, callback) ->
+    req = {}
+    req.endpoint = "/events/#{slug}"
+    req.callback = callback
+
+    return @makeRequest req
+
+
+  getEventSignups: (slug, callback) ->
+    req = {}
+    req.endpoint = "/events/#{slug}/signups"
+    req.callback = callback
+
+    return @makeRequest req
+
+
   searchInstitutions: (query, callback) ->
     req = {}
     req.params   = {"q": query}
@@ -96,7 +200,7 @@ login = ->
 token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzM5MTUyOTgsImlkIjoyLCJldnQiOlsxXSwidHlwIjoidXNyIn0.USfHFAJ_AYw4hP-wAjiVSWiXbwxPwWLjzzC5oXhVCws"
 api = new HackerAPI token
 callback = console.log
-# api.searchInstitutions("water", console.log)
+api.searchInstitutions("water", console.log)
 # api.getCurrentUserInfo(callback)
 api.getUserInfo(1, callback)
 
@@ -106,5 +210,3 @@ api.getUserInfo(1, callback)
 
 # TODOS
 # - handle errors
-
-
